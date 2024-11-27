@@ -73,6 +73,7 @@ flutter:
     - images/screen1.png
     - images/screen2.png
     - images/screen3.png
+    - images/wallet.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
