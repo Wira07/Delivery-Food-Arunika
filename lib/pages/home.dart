@@ -347,6 +347,7 @@ class _HomeState extends State<Home> {
         ),
         GestureDetector(
           onTap: () {
+
             icecream = false;
             pizza = false;
             salad = false;
