@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
                 // Logo Arunika
                 Center(
                   child: Image.asset(
-                    "images/logo_arunika.png",
+                    "images/logo_arunika_white.png",
                     width: MediaQuery.of(context).size.width / 2,
                     fit: BoxFit.contain,
                   ),

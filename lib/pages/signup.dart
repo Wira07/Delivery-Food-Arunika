@@ -27,7 +27,7 @@ class _SignupState extends State<Signup> {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: Colors.green,
           content: Text(
-            "Registration Successful",
+            "Pendaftaran Berhasil",
             style: TextStyle(fontSize: 20.0),
           ),
         ));
@@ -41,7 +41,7 @@ class _SignupState extends State<Signup> {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.orangeAccent,
             content: Text(
-              "Weak Password",
+              "Kata Sandi Lemah",
               style: TextStyle(fontSize: 18.0),
             ),
           ));
@@ -49,7 +49,7 @@ class _SignupState extends State<Signup> {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.orangeAccent,
             content: Text(
-              "Account Already Exists",
+              "Akun Sudah Ada",
               style: TextStyle(fontSize: 20.0),
             ),
           ));
@@ -72,14 +72,14 @@ class _SignupState extends State<Signup> {
               const SizedBox(height: 20.0),
               Center(
                 child: Image.asset(
-                  "images/logo_arunika.png",
+                  "images/logo_arunika_white.png",
                   height: 200,
                   fit: BoxFit.contain,
                 ),
               ),
               const SizedBox(height: 20.0),
               const Text(
-                "Create Your Account",
+                "Buat Akun Anda",
                 style: TextStyle(
                   fontSize: 28.0,
                   fontWeight: FontWeight.bold,
@@ -88,7 +88,7 @@ class _SignupState extends State<Signup> {
               ),
               const SizedBox(height: 10.0),
               Text(
-                "Start your journey with us. Let’s make it happen!",
+                "Mulai perjalanan Anda bersama kami. Ayo wujudkan bersama!",
                 style: TextStyle(
                   fontSize: 16.0,
                   color: Colors.grey.shade400,
@@ -112,7 +112,7 @@ class _SignupState extends State<Signup> {
                           controller: nameController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please Enter Username';
+                              return 'Harap Masukkan Nama Pengguna';
                             }
                             return null;
                           },
@@ -121,13 +121,13 @@ class _SignupState extends State<Signup> {
                           },
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            hintText: "Username",
+                            hintText: "Nama Pengguna",
                             hintStyle: const TextStyle(
                               color: Colors.grey,
                               fontSize: 16.0,
                             ),
                             prefixIcon:
-                                const Icon(Icons.person, color: Colors.grey),
+                            const Icon(Icons.person, color: Colors.grey),
                             focusedBorder: OutlineInputBorder(
                               borderSide: const BorderSide(color: Colors.red),
                               borderRadius: BorderRadius.circular(10),
@@ -145,7 +145,7 @@ class _SignupState extends State<Signup> {
                           controller: mailController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please Enter Email';
+                              return 'Harap Masukkan Email';
                             }
                             return null;
                           },
@@ -160,7 +160,7 @@ class _SignupState extends State<Signup> {
                               fontSize: 16.0,
                             ),
                             prefixIcon:
-                                const Icon(Icons.email, color: Colors.grey),
+                            const Icon(Icons.email, color: Colors.grey),
                             focusedBorder: OutlineInputBorder(
                               borderSide: const BorderSide(color: Colors.red),
                               borderRadius: BorderRadius.circular(10),
@@ -178,7 +178,7 @@ class _SignupState extends State<Signup> {
                           controller: passwordController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please Enter Password';
+                              return 'Harap Masukkan Kata Sandi';
                             }
                             return null;
                           },
@@ -188,7 +188,7 @@ class _SignupState extends State<Signup> {
                           obscureText: _obscurePassword,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            hintText: "Password",
+                            hintText: "Kata Sandi",
                             hintStyle: const TextStyle(
                               color: Colors.grey,
                               fontSize: 16.0,
@@ -236,7 +236,7 @@ class _SignupState extends State<Signup> {
                             ),
                             child: const Center(
                               child: Text(
-                                "Sign Up",
+                                "Daftar",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18.0,
@@ -261,7 +261,7 @@ class _SignupState extends State<Signup> {
                     );
                   },
                   child: const Text(
-                    "Already have an account? Log in",
+                    "Sudah Punya Akun? Masuk",
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 16.0,
