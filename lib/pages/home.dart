@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/pages/details.dart';
 import '../widget/widget_support.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  final String? userName;
+
+  const Home({super.key, this.userName});
 
   @override
   State<Home> createState() => _HomeState();
@@ -11,12 +15,59 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   bool icecream = false, pizza = false, salad = false, burger = false;
+  String userName = "User";
+
+  @override
+  void initState() {
+    super.initState();
+    _setupUserListener();
+  }
+
+  /// Fungsi untuk mendengarkan perubahan pada status user FirebaseAuth
+  void _setupUserListener() {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        _fetchUserName(user);
+      } else {
+        setState(() {
+          userName = "User";
+        });
+      }
+    });
+  }
+
+  Future<void> _fetchUserName(User user) async {
+    try {
+      // Ambil dokumen berdasarkan UID (Id)
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users') // Nama koleksi Firestore Anda
+          .doc(user.uid) // UID pengguna
+          .get();
+
+      if (userDoc.exists && userDoc.data() != null) {
+        // Ambil data dokumen
+        final data = userDoc.data() as Map<String, dynamic>;
+
+        // Ambil field "Name"
+        final name = data['Name'] ?? "User"; // Default "User" jika kosong
+
+        if (mounted) {
+          setState(() {
+            userName = name; // Set nama pengguna
+          });
+        }
+      } else {
+        print("Dokumen pengguna tidak ditemukan.");
+      }
+    } catch (e) {
+      print("Error saat mengambil data pengguna: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        // Tambahkan SingleChildScrollView di sini
         child: Container(
           margin: const EdgeInsets.only(top: 50.0, left: 20.0, right: 10.0),
           child: Column(
@@ -26,7 +77,7 @@ class _HomeState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Hello, Wira",
+                    "Hello, $userName",
                     style: AppWidget.boldTextFeildStyle(),
                   ),
                   Container(
@@ -347,7 +398,6 @@ class _HomeState extends State<Home> {
         ),
         GestureDetector(
           onTap: () {
-
             icecream = false;
             pizza = false;
             salad = false;
