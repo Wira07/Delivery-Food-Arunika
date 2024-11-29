@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/pages/bottomnav.dart';
 import 'package:fooddelivery/pages/login.dart';
+import 'package:fooddelivery/service/database.dart';
+import 'package:random_string/random_string.dart';
+import '../service/shared_pref.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -31,6 +35,23 @@ class _SignupState extends State<Signup> {
             style: TextStyle(fontSize: 20.0),
           ),
         ));
+        String Id = randomAlphaNumeric(10);
+        Map<String, dynamic> addUserInfo = {
+          "Name": nameController.text, // Perbaikan: namecontroller -> nameController
+          "Email": mailController.text, // Perbaikan: mailcontroller -> mailController
+          "Wallet": "0",
+          "Id": Id,
+        };
+
+        // Save user information to Firestore (in 'users' collection)
+        await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set(addUserInfo);
+        await SharedPreferenceHelper().saveUserName(nameController.text); // Perbaikan: namecontroller -> nameController
+        await SharedPreferenceHelper().saveUserEmail(mailController.text); // Perbaikan: mailcontroller -> mailController
+        await DatabaseMethods().addUserDetail(addUserInfo, Id);
+        // await SharedPreferenceHelper().saveUserName(namecontroller.text);
+        // await SharedPreferenceHelper().saveUserEmail(mailcontroller.text);
+        await SharedPreferenceHelper().saveUserWallet('0');
+        await SharedPreferenceHelper().saveUserId(Id);
         // Navigasi ke halaman utama
         Navigator.pushReplacement(
           context,
