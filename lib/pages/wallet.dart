@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
+import '../service/shared_pref.dart';
 
 class Wallet extends StatefulWidget {
   const Wallet({super.key});
@@ -11,9 +12,26 @@ class Wallet extends StatefulWidget {
 }
 
 class _WalletState extends State<Wallet> {
+  String? walletValue;
+  int? walletAddition;
+
+  getthesharedpref() async {
+    walletValue = await SharedPreferenceHelper().getUserWallet();
+    setState(() {});
+  }
+
+  ontheload() async {
+    await getthesharedpref();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    ontheload();
+    super.initState();
+  }
+
   Map<String, dynamic>? paymentIntent;
-  int? add = 0;
-  String? wallet = "0";
   String secretKey =
       "sk_test_51QPmjyI3a2FhBl8910tFNkJ3kYcYt4WQPJlA16iMXrn61gRGrDHeCKt0gCpOATO4vr9W6Ldq4DIsqtKeEMByrHTb00TZCY9u72";
 
@@ -100,7 +118,7 @@ class _WalletState extends State<Wallet> {
                               ),
                               const SizedBox(height: 5.0),
                               Text(
-                                "Rp $wallet",
+                                "Rp $walletValue",
                                 style: const TextStyle(
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.bold,
@@ -210,13 +228,14 @@ class _WalletState extends State<Wallet> {
   displayPaymentSheet(String amount) async {
     try {
       await Stripe.instance.presentPaymentSheet().then((value) async {
-        add = int.parse(wallet!) + int.parse(amount);
+        int updatedWallet = int.parse(walletValue!) + int.parse(amount);
+        await SharedPreferenceHelper().saveUserWallet(updatedWallet.toString());
         setState(() {
-          wallet = add.toString();
+          walletValue = updatedWallet.toString();
         });
 
         // Simpan ke database (ganti implementasi sesuai kebutuhan Anda)
-        await saveToDatabase(wallet!);
+        await saveToDatabase(walletValue!);
 
         showDialog(
           context: context,
@@ -225,6 +244,7 @@ class _WalletState extends State<Wallet> {
           ),
         );
       });
+      await getthesharedpref();
     } on StripeException catch (e) {
       print('Stripe Error: $e');
       showDialog(
@@ -242,7 +262,8 @@ class _WalletState extends State<Wallet> {
     print("Saving $wallet to the database.");
   }
 
-  Future<Map<String, dynamic>> createPaymentIntent(String amount, String currency) async {
+  Future<Map<String, dynamic>> createPaymentIntent(
+      String amount, String currency) async {
     try {
       Map<String, dynamic> body = {
         'amount': calculateAmount(amount),
