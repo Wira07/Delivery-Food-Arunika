@@ -228,11 +228,13 @@ class _WalletState extends State<Wallet> {
   displayPaymentSheet(String amount) async {
     try {
       await Stripe.instance.presentPaymentSheet().then((value) async {
-        int updatedWallet = int.parse(walletValue!) + int.parse(amount);
-        await SharedPreferenceHelper().saveUserWallet(updatedWallet.toString());
-        setState(() {
-          walletValue = updatedWallet.toString();
-        });
+        // Update nilai walletValue langsung setelah pembayaran sukses
+        int updatedWallet = (walletValue != null ? int.parse(walletValue!) : 0) + int.parse(amount);
+        walletValue = updatedWallet.toString();
+        setState(() {});
+
+        // Simpan nilai dompet ke shared preferences
+        await SharedPreferenceHelper().saveUserWallet(walletValue!);
 
         // Simpan ke database (ganti implementasi sesuai kebutuhan Anda)
         await saveToDatabase(walletValue!);
@@ -244,6 +246,7 @@ class _WalletState extends State<Wallet> {
           ),
         );
       });
+      // Perbarui shared preferences setelah pembayaran
       await getthesharedpref();
     } on StripeException catch (e) {
       print('Stripe Error: $e');
@@ -257,6 +260,7 @@ class _WalletState extends State<Wallet> {
       print('Error: $e');
     }
   }
+
 
   Future<void> saveToDatabase(String wallet) async {
     print("Saving $wallet to the database.");
