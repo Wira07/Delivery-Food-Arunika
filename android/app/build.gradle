@@ -12,12 +12,12 @@ android {
     ndkVersion = "25.1.8937393" // Pastikan versi NDK sesuai
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = "1.8" // Koreksi penulisan agar sesuai
+        jvmTarget = "11" // Koreksi penulisan agar sesuai
     }
 
     defaultConfig {
@@ -48,5 +48,5 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.stripe:stripe-android:20.21.1")
-    implementation("com.facebook.react:react-native:+")
+//    implementation("com.facebook.react:react-native:+")
 }
